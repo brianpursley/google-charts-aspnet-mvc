@@ -1,0 +1,48 @@
+﻿@model GoogleChartsExample.Models.SalesChartModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div> 
+        <div id="chart" style="width: 500px; height: 300px;"></div>
+        <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart', 'bar'] });
+
+            google.charts.setOnLoadCallback(function () {
+                var title = '@Model.Title';
+                var subtitle = '@Model.Subtitle';
+                var dataTable = new google.visualization.DataTable(
+                    @Html.Raw(Json.Encode(Model.DataTable))
+                );
+
+                drawBarChart('chart', title, subtitle, dataTable);                
+                //drawColumnChart('chart', title, dataTable);
+            });
+
+            function drawBarChart(elementId, title, subtitle, dataTable) {
+                var options = {
+                    chart: {
+                        title: title,
+                        subtitle: subtitle
+                    }
+                };
+                var chart = new google.charts.Bar(document.getElementById(elementId));
+                chart.draw(dataTable, options);
+            }
+
+            function drawColumnChart(elementId, title, dataTable) {
+                var options = {
+                    title: title
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById(elementId));
+                chart.draw(dataTable, options);
+            }
+        </script>
+    </div>
+</body>
+</html>
